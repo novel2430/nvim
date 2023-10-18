@@ -36,12 +36,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
-keymap("n", "<leader>b", ":bnext<CR>", opts)
-keymap("n", "<leader>B", ":bdelete %<CR>", opts)
+keymap("n", "<S-Left>", ":bnext<CR>", opts)
+keymap("n", "<S-Right>", ":bprevious<CR>", opts)
+keymap("n", "<leader>bd", ":bdelete<CR>", opts)
 
 -- Navigate tabs
-keymap("n", "<A-Right>", ":tabprevious<CR>", opts)
-keymap("n", "<A-Left>", ":tabNext<CR>", opts)
+-- keymap("n", "<A-Right>", ":tabprevious<CR>", opts)
+-- keymap("n", "<A-Left>", ":tabNext<CR>", opts)
 
 -- Insert --
 keymap("i", "<C-w>", "<ESC>", opts)
