@@ -49,6 +49,10 @@ local config = {
   -- for a list of options
   settings = {
     java = {
+      home = "/usr/lib/jvm/default",
+      project = {
+        encoding = "UTF-8",
+      },
       errors = {
         incompleteClasspath = {
           severity = "warning"
@@ -58,6 +62,7 @@ local config = {
         server = "verbose"
       },
       import = {
+        enabled = true,
         gradle = {
           enabled = true
         },
@@ -73,25 +78,34 @@ local config = {
         },
       },
       signatureHelp = {
-        enabled = false
+        enabled = true,
+        description = {
+          enabled = true,
+        },
       },
       saveActions = {
         organizeImports = true
       },
       contentProvider = {
-        preferred = ""
+        preferred = "fernflower"
       },
       autobuild = {
         enabled = false
       },
       completion = {
         favoriteStaticMembers = {
+          "org.hamcrest.MatcherAssert.assertThat",
+          "org.hamcrest.Matchers.*",
+          "org.hamcrest.CoreMatchers.*",
           "org.junit.Assert.*",
           "org.junit.Assume.*",
           "org.junit.jupiter.api.Assertions.*",
           "org.junit.jupiter.api.Assumptions.*",
           "org.junit.jupiter.api.DynamicContainer.*",
-          "org.junit.jupiter.api.DynamicTest.*"
+          "org.junit.jupiter.api.DynamicTest.*",
+          "java.util.Objects.requireNonNull",
+          "java.util.Objects.requireNonNullElse",
+          "org.mockito.Mockito.*",
         },
         importOrder = {
           "java",
@@ -99,9 +113,21 @@ local config = {
           "com",
           "org"
         },
+        filteredTypes = {
+          "com.sun.*",
+          "io.micrometer.shaded.*",
+          "java.awt.*",
+          "org.graalvm.*",
+          "jdk.*",
+          "sun.*",
+        },
       },
       configuration = {
-        updateBuildConfiguration = "interactive",
+        -- updateBuildConfiguration = "interactive",
+        maven = {
+          userSettings = vim.fn.expand("~/.m2/settings.xml"),
+          globalSettings = vim.fn.expand("~/.m2/settings.xml"),
+        },
         runtimes = {
           {
             name = "JavaSE-17",
@@ -200,11 +226,28 @@ local function lsp_keymaps(bufnr)
   --)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+  --自动导入全部缺失的包，自动删除多余的未用到的包
+  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>go", "<cmd>lua require'jdtls'.organize_imports()<CR>", opts)
+  -- 代码保存自动格式化formatting
+  vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 end
 
 config['on_attach'] = function(client, bufnr)
   lsp_keymaps(bufnr);
 end
+
+local cache_vars = {}
+if cache_vars.capabilities == nil then
+  require("jdtls").extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+
+  local ok_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
+  cache_vars.capabilities = vim.tbl_deep_extend(
+    'force',
+    vim.lsp.protocol.make_client_capabilities(),
+    ok_cmp and cmp_lsp.default_capabilities() or {}
+  )
+end
+config['capabilities'] = cache_vars.capabilities
 
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
