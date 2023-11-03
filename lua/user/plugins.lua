@@ -64,7 +64,9 @@ return packer.startup(function(use)
   -- Tree Sitter
   use "nvim-treesitter/nvim-treesitter"
   -- Comment
-  use "terrortylor/nvim-comment"
+  use {
+    'numToStr/Comment.nvim',
+  }
   -- Last Place
   use "ethanholz/nvim-lastplace"
   -- Auto Pair

@@ -7,7 +7,7 @@ local lombok_path = jdtls_dir .. '/lombok.jar'
 -- Project Data config
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = vim.fn.stdpath('data') .. '/nvim-java-workspace-data/' .. project_name
-os.execute("mkdir " .. workspace_dir)
+-- os.execute("mkdir " .. workspace_dir)
 -- Root config
 local root_marker = { ".git", "nvnw", "gradlew", "pom.xml", "bundle.gradle" }
 local root_dir_path = require("jdtls.setup").find_root(root_marker)
