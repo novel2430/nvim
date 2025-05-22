@@ -41,6 +41,8 @@ keymap("n", "<leader>bd", ":bdelete<CR>", opts)
 keymap("i", "<C-w>", "<ESC>", opts)
 keymap("i", "<A-j>", "<Down>", opts)
 keymap("i", "<A-k>", "<Up>", opts)
+-- keymap("i", "<∆>", "<Down>", opts)
+-- keymap("i", "<˚>", "<Up>", opts)
 keymap("i", "<A-h>", "<Left>", opts)
 keymap("i", "<A-l>", "<Right>", opts)
 keymap("i", "<A-f>", "<S-Right>", opts)
@@ -58,16 +60,12 @@ keymap("i", "<C-r>", "<ESC>:redo<CR>i", opts)
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 -- Move text up and down
-keymap("v", "<A-j>", ":m .+1<CR>==", opts)
-keymap("v", "<A-k>", ":m .-2<CR>==", opts)
+keymap("v", "J", ":m .+1<CR>==", opts)
+keymap("v", "K", ":m .-2<CR>==", opts)
 -- Visual Block --
 -- Move text up and down
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "∆", ":move '>+1<CR>gv-gv", opts) -- For MacOS
-keymap("x", "˚", ":move '<-2<CR>gv-gv", opts) -- For MacOS
--- keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
--- keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- Terminal --
 -- Better terminal navigation
 keymap("n", "<Leader>t", ":belowright 10split<CR>:term zsh<CR>i", opts)
