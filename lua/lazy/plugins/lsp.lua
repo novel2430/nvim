@@ -73,7 +73,7 @@ M.config = { -- LSP Configuration & Plugins
       -- gopls = {},
       -- rust_analyzer = require("lazy.plugins.LSP.rust_analyzer"),
       pyright = require('lazy.plugins.LSP.pyright'),
-      jdtls = require('lazy.plugins.LSP.jdtls'), -- just help to install jdtls
+      -- jdtls = require('lazy.plugins.LSP.jdtls'), -- just help to install jdtls
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
       -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -101,22 +101,35 @@ M.config = { -- LSP Configuration & Plugins
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-    require('mason-lspconfig').setup {
-      handlers = {
-        function(server_name)
-          -- if server_name ~= 'jdtls' then -- jdtls config in nvim-jdtls
-          local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for tsserver)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-          -- end
-        end,
-      },
-    }
+    -- require('mason-lspconfig').setup {
+    --   handlers = {
+    --     function(server_name)
+    --       -- if server_name ~= 'jdtls' then -- jdtls config in nvim-jdtls
+    --       local server = servers[server_name] or {}
+    --       -- This handles overriding only values explicitly passed
+    --       -- by the server configuration above. Useful when disabling
+    --       -- certain features of an LSP (for example, turning off formatting for tsserver)
+    --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+    --       vim.lsp.config(server_name, server)
+    --       vim.lsp.enable(server_name)
+    --       -- end
+    --     end,
+    --   },
+    -- }
+
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+    for server_name, server_config in pairs(servers) do
+      vim.lsp.config(server_name, {
+        capabilities = capabilities,
+        settings = server_config
+      })
+      vim.lsp.enable(server_name)
+    end
+
     -- For Swiftui
-    require('lspconfig')['sourcekit'].setup({
+    vim.lsp.config('sourcekit', {
       capabilities = {
         workspace = {
           didChangeWatchedFiles = {
@@ -124,8 +137,8 @@ M.config = { -- LSP Configuration & Plugins
           },
         },
       },
-      -- capabilities = capabilities
     })
+    vim.lsp.enable('sourcekit')
   end,
 }
 return M
