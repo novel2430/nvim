@@ -41,6 +41,12 @@ return function(event)
   --
   -- When you move your cursor, the highlights will be cleared (the second autocommand).
   local client = vim.lsp.get_client_by_id(event.data.client_id)
+  -- ✅ 关闭 LSP 语义高亮（semantic tokens），但不影响 documentHighlight
+  if client then
+    client.server_capabilities.semanticTokensProvider = nil
+    -- 如果已启动过 semantic tokens，顺手停掉（新版本有这个 API；旧版本 pcall 会忽略）
+    pcall(vim.lsp.semantic_tokens.stop, event.buf, client.id)
+  end
   if client and client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       buffer = event.buf,

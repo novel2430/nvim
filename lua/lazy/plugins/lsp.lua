@@ -70,19 +70,11 @@ M.config = { -- LSP Configuration & Plugins
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       clangd = {},
-      -- gopls = {},
       -- rust_analyzer = require("lazy.plugins.LSP.rust_analyzer"),
       pyright = require('lazy.plugins.LSP.pyright'),
-      -- jdtls = require('lazy.plugins.LSP.jdtls'), -- just help to install jdtls
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      -- tsserver = {},
-      --
-      lua_ls = require('lazy.plugins.LSP.lua_ls')
+      lua_ls = require('lazy.plugins.LSP.lua_ls'),
+      vtsls = require('lazy.plugins.LSP.vtsls'),
+      vue_ls = {},
     }
 
     -- Ensure the servers and tools above are installed
@@ -121,24 +113,22 @@ M.config = { -- LSP Configuration & Plugins
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
     for server_name, server_config in pairs(servers) do
-      vim.lsp.config(server_name, {
-        capabilities = capabilities,
-        settings = server_config
-      })
+      server_config.capabilities = capabilities
+      vim.lsp.config(server_name, server_config)
       vim.lsp.enable(server_name)
     end
 
     -- For Swiftui
-    vim.lsp.config('sourcekit', {
-      capabilities = {
-        workspace = {
-          didChangeWatchedFiles = {
-            dynamicRegistration = true,
-          },
-        },
-      },
-    })
-    vim.lsp.enable('sourcekit')
+    -- vim.lsp.config('sourcekit', {
+    --   capabilities = {
+    --     workspace = {
+    --       didChangeWatchedFiles = {
+    --         dynamicRegistration = true,
+    --       },
+    --     },
+    --   },
+    -- })
+    -- vim.lsp.enable('sourcekit')
   end,
 }
 return M

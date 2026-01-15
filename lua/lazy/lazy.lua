@@ -1,6 +1,6 @@
 require('lazy').setup({
   -- Treesitter --
-  require('lazy.plugins.treesitter').config,
+  -- require('lazy.plugins.treesitter').config,
   -- LSP --
   require('lazy.plugins.lsp').config,
   -- Cmp --
