@@ -1,69 +1,15 @@
-local util = require 'lspconfig.util'
--- Some Config Path
 local jdtls_dir = vim.fn.stdpath('data') .. '/mason/packages/jdtls'
-local config_dir = jdtls_dir .. '/config_mac_arm'
+local config_dir = jdtls_dir .. '/config_linux'
 local plugin_dir = jdtls_dir .. '/plugins/'
 local jar_dir = vim.fn.globpath(plugin_dir, 'org.eclipse.equinox.launcher_*.jar')
 local lombok_path = jdtls_dir .. '/lombok.jar'
 local data_dir = vim.fn.stdpath('data') .. '/nvim-java-workspace-data/'
-local root_files = {
-  -- Single-module projects
-  {
-    'build.xml',           -- Ant
-    'pom.xml',             -- Maven
-    'settings.gradle',     -- Gradle
-    'settings.gradle.kts', -- Gradle
-  },
-  -- Multi-module projects
-  { 'build.gradle', 'build.gradle.kts' },
-}
-
-function check_dir_exists(file)
-  local ok, err, code = os.rename(file, file)
-  if not ok then
-    if code == 13 then
-      return true
-    end
-  end
-  return ok
-end
-
-function make_dir()
-  if not check_dir_exists(data_dir) then
-    os.execute("mkdir " .. data_dir)
-  end
-end
-
-local getroot = function(fname)
-  for _, patterns in ipairs(root_files) do
-    local root = util.root_pattern(unpack(patterns))(fname)
-    if root then
-      return root
-    end
-  end
-end
-
-function getroot_val(fname)
-  for _, patterns in ipairs(root_files) do
-    local root = util.root_pattern(unpack(patterns))(fname)
-    if root then
-      return root
-    end
-  end
-end
-
--- Make Package Data dir
-make_dir()
+local java_home = '/usr/lib/jvm/java-21-openjdk-amd64'
 
 return {
-  -- The command that starts the language server
-  -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-
-    -- 💀
-    '/opt/homebrew/Cellar/openjdk@21/21.0.4/bin/java', -- or '/path/to/java17_or_newer/bin/java'
+    'java', -- or '/path/to/java17_or_newer/bin/java'
     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
-
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -78,17 +24,9 @@ return {
     '-configuration', config_dir,
     '-data', data_dir
   },
-
-  -- This is the default if not provided, you can remove it. Or adjust as needed.
-  -- One dedicated LSP server & client will be started per unique root_dir
-  root_dir = getroot(fname),
-
-  -- Here you can configure eclipse.jdt.ls specific settings
-  -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
-  -- for a list of options
   settings = {
     java = {
-      home = "/opt/homebrew/Cellar/openjdk@21/21.0.4/",
+      home = java_home,
       project = {
         encoding = "UTF-8",
       },

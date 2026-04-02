@@ -21,11 +21,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
+
+-- Build <luasnip> plugind
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    local name = ev.data.spec.name
+    local kind = ev.data.kind
+    if name == 'luasnip' and (kind == 'install' or kind == 'update') then
+      local result = vim.system(
+        { 'make', 'install_jsregexp' },
+        { cwd = ev.data.path }
+      ):wait()
+      if result.code ~= 0 then
+        vim.notify(
+          ('LuaSnip build failed: %s'):format(result.stderr or 'unknown error'),
+          vim.log.levels.ERROR
+        )
+      end
+    end
+  end,
+})

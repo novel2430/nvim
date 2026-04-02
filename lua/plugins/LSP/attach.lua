@@ -29,23 +29,15 @@ return function(event)
     },
   }
   vim.diagnostic.config(config)
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-  })
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-  })
   -- The following two autocommands are used to highlight references of the
   -- word under your cursor when your cursor rests there for a little while.
   --    See `:help CursorHold` for information about when this is executed
   --
   -- When you move your cursor, the highlights will be cleared (the second autocommand).
   local client = vim.lsp.get_client_by_id(event.data.client_id)
-  -- ✅ 关闭 LSP 语义高亮（semantic tokens），但不影响 documentHighlight
+  -- close LSP syntax highlight
   if client then
     client.server_capabilities.semanticTokensProvider = nil
-    -- 如果已启动过 semantic tokens，顺手停掉（新版本有这个 API；旧版本 pcall 会忽略）
-    pcall(vim.lsp.semantic_tokens.stop, event.buf, client.id)
   end
   if client and client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -67,5 +59,5 @@ return function(event)
   -- end
 
   -- Keymap --
-  require('lazy.plugins.LSP.keymap')(event, client.name)
+  -- require('lazy.plugins.LSP.keymap')(event, client.name)
 end

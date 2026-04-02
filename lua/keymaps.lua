@@ -1,22 +1,20 @@
--- Basic Keymap --
-local opts = { noremap = true, silent = true }
+local opts = { remap = false, silent = true }
 local term_opts = { silent = true }
+
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
---Remap space as leader key
+local keymap = vim.keymap.set
+
+-- Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",
--- Normal --
--- Highlight search close --
+
+-- ==== BASIC KEYMAP SETUP ====
+-- Disable highlight
 keymap('n', '<Esc>', '<cmd>nohlsearch<CR>', opts)
+-- Comment Toggle
+keymap("n", "<C-\\>\\", "gcc", { remap = true, silent = true })
+keymap("v", "<C-\\>\\", "gc", { remap = true, silent = true })
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
@@ -34,10 +32,7 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 keymap("n", "<S-Left>", ":bnext<CR>", opts)
 keymap("n", "<S-Right>", ":bprevious<CR>", opts)
 keymap("n", "<leader>bd", ":bdelete<CR>", opts)
--- Navigate tabs
--- keymap("n", "<A-Right>", ":tabprevious<CR>", opts)
--- keymap("n", "<A-Left>", ":tabNext<CR>", opts)
--- Insert --
+-- Insert Mode navigation
 keymap("i", "<C-w>", "<ESC>", opts)
 keymap("i", "<A-j>", "<Down>", opts)
 keymap("i", "<A-k>", "<Up>", opts)
@@ -64,27 +59,15 @@ keymap("v", "<A-k>", ":m .-2<CR>==", opts)
 -- Move text up and down
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
-keymap("x", "∆", ":move '>+1<CR>gv-gv", opts) -- For MacOS
-keymap("x", "˚", ":move '<-2<CR>gv-gv", opts) -- For MacOS
--- keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
--- keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- Terminal --
 -- Better terminal navigation
 keymap("n", "<Leader>t", ":belowright 10split<CR>:term zsh<CR>i", opts)
 keymap("t", "<Leader>t", "<C-\\><C-n>:bdelete!<CR>", term_opts)
 keymap("t", "<ESC>", "<C-\\><C-n>", term_opts)
 keymap("t", "<C-w>", "<C-\\><C-n>", term_opts)
-keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
-keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
-keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
-keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- Saving file
 keymap("n", "<C-s>", ":wall<CR>", opts)
-keymap("n", "<C-q>", ":xa<CR>", opts)
-keymap("n", "<C-a>", ":qa!<CR>", opts)
 keymap("i", "<C-s>", "<ESC>:wall<CR>", opts)
-keymap("i", "<C-q>", "<ESC>:xa<CR>", opts)
-keymap("i", "<C-a>", "<ESC>:qa!<CR>", opts)
 -- Copy & Paste & Replace
 -- One Line
 keymap("n", "yy", "\"ayy", opts)
@@ -98,3 +81,31 @@ keymap("n", "p", "\"ap", opts)
 keymap("n", "<Leader>p", "\"+p", opts)
 -- Replace
 keymap("v", "p", "\"_d\"ap", opts)
+
+
+-- ==== TELESCOPE KEYMAP SETUP ====
+local builtin = require 'telescope.builtin'
+-- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+keymap('n', '<leader>fk', builtin.keymaps)
+keymap('n', '<leader>ff', builtin.find_files)
+-- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+-- vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+-- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+keymap('n', '<leader>fd', builtin.diagnostics)
+-- vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+keymap('n', '<leader>fr', builtin.oldfiles)
+keymap('n', '<leader>fb', builtin.buffers)
+keymap('n', '<leader>fn', builtin.current_buffer_fuzzy_find)
+keymap('n', "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+
+
+-- ==== LSP KEYMAP SETUP ====
+keymap('n', "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+keymap('n', "K", function() vim.lsp.buf.hover({ border = 'rounded' }) end, opts)
+keymap('n', "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+-- keymap('n', "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+keymap('n', "<leader>rn", function() vim.lsp.buf.rename() end, opts)
+keymap('n', "gr", "<cmd>Telescope lsp_references<CR>", opts)
+keymap('n', "gl", function() vim.diagnostic.open_float(nil, { focus = false }) end, opts)
+-- keymap('n', "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+keymap('n', "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
