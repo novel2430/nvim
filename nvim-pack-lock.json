@@ -20,6 +20,11 @@
       "src": "https://github.com/saadparwaiz1/cmp_luasnip.git",
       "version": "'master'"
     },
+    "friendly-snippets": {
+      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "src": "https://github.com/rafamadriz/friendly-snippets.git",
+      "version": "'main'"
+    },
     "indent-blankline.nvim": {
       "rev": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim.git",

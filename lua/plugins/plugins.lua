@@ -13,6 +13,8 @@ vim.pack.add({
   { src = "https://github.com/hrsh7th/cmp-path.git",                        version = 'main', },
   -- [completion] cmp core
   { src = "https://github.com/hrsh7th/nvim-cmp.git",                        version = 'v0.0.2', },
+  -- [completion] friendly snippets
+  { src = "https://github.com/rafamadriz/friendly-snippets.git",            version = "main" },
   -- [LSP] mason
   { src = 'https://github.com/mason-org/mason.nvim.git',                    version = 'v2.2.1', },
   -- [LSP] mason-lspconfig

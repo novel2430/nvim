@@ -1,6 +1,6 @@
 return {
+  -- C / C++
   clangd = {},
-  -- rust_analyzer = require("lazy.plugins.LSP.rust_analyzer"),
   pyright = {
     single_file_support = true,
     settings = {
@@ -14,6 +14,7 @@ return {
       },
     },
   },
+  -- Lua
   lua_ls = {
     settings = {
       Lua = {
@@ -26,15 +27,10 @@ return {
           ),
         },
         telemetry = { enable = false },
-        -- workspace = {
-        --   library = {
-        --     library = vim.api.nvim_get_runtime_file("", true),
-        --     -- [vim.fn.stdpath("config") .. "/lua"] = true,
-        --   },
-        -- },
       },
     },
   },
+  -- Vue, Typescript, Javascript
   vtsls = {
     settings = {
       vtsls = {
@@ -53,6 +49,8 @@ return {
     },
     filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
   },
+  -- Vue
   vue_ls = {},
+  -- Java
   jdtls = require("plugins.LSP.jdtls"),
 }
