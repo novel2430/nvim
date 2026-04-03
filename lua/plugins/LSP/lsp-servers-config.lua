@@ -19,11 +19,19 @@ return {
       Lua = {
         diagnostics = { globals = { "vim" }, },
         workspace = {
-          library = {
-            library = vim.api.nvim_get_runtime_file("", true),
-            [vim.fn.stdpath("config") .. "/lua"] = true,
-          },
+          checkThirdParty = false,
+          library = vim.list_extend(
+            vim.api.nvim_get_runtime_file("", true),
+            { vim.fn.stdpath("config") .. "/lua" }
+          ),
         },
+        telemetry = { enable = false },
+        -- workspace = {
+        --   library = {
+        --     library = vim.api.nvim_get_runtime_file("", true),
+        --     -- [vim.fn.stdpath("config") .. "/lua"] = true,
+        --   },
+        -- },
       },
     },
   },
