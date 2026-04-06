@@ -2,7 +2,7 @@ vim.pack.add({
   -- lspconfig
   { src = 'https://github.com/neovim/nvim-lspconfig.git',                   version = 'v2.7.0', },
   -- treesitter
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git',         version = 'v0.10.0', },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git',         version = 'main', },
   -- [completion] luasnip
   { src = "https://github.com/L3MON4D3/LuaSnip.git",                        version = 'v2.4.1', },
   -- [completion] cmp_luasnip

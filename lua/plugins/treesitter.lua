@@ -9,7 +9,7 @@ local need_filetype = {
   'java',
   'javadoc',
   'typescript',
-  'jsx',
+  'tsx',
   'json',
   'cmake',
   'ninja',
@@ -20,11 +20,17 @@ local need_filetype = {
   'nix',
 }
 
-require('nvim-treesitter').setup {
+require 'nvim-treesitter.configs'.setup {
   -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
-  install_dir = vim.fn.stdpath('data') .. '/site'
+  parser_install_dir = vim.fn.stdpath('data') .. '/site',
+  ensure_installed = need_filetype,
+  auto_install = true,
+  sync_install = false,
+  ignore_install = {},
+  highlight = { enable = true },
+  incremental_selection = { enable = true },
+  textobjects = { enable = true },
 }
-require('nvim-treesitter').install(need_filetype)
 
 -- Auto Enable Highlight
 vim.api.nvim_create_autocmd('FileType', {
