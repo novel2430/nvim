@@ -3,6 +3,10 @@ vim.pack.add({
   { src = 'https://github.com/neovim/nvim-lspconfig.git',                   version = 'v2.7.0', },
   -- treesitter
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git',         version = 'main', },
+  -- nvim-web-devicons
+  { src = "https://github.com/nvim-tree/nvim-web-devicons.git",             version = 'master', },
+  -- oil.nvim
+  { src = "https://github.com/stevearc/oil.nvim.git",                       version = "v2.15.0" },
   -- [completion] luasnip
   { src = "https://github.com/L3MON4D3/LuaSnip.git",                        version = 'v2.4.1', },
   -- [completion] cmp_luasnip
@@ -37,6 +41,8 @@ vim.pack.add({
   { src = "https://github.com/selimacerbas/markdown-preview.nvim.git",      version = 'v1.5.3', },
 })
 
+require("plugins.nvim-web-devicons")
+require("plugins.nvim-oil")
 require("plugins.treesitter")
 require("plugins.nvim-cmp")
 require("plugins.LSP.lsp-core")
