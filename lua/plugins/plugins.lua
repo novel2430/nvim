@@ -35,6 +35,8 @@ vim.pack.add({
   { src = "https://github.com/lukas-reineke/indent-blankline.nvim.git",     version = 'v3.9.1', },
   -- vscode colorscheme
   { src = "https://github.com/Mofiqul/vscode.nvim.git",                     version = 'main', },
+  -- nightfox colorscheme
+  { src = "https://github.com/EdenEast/nightfox.nvim.git",                  version = 'v3.10.0' },
   -- live server (md preview's dependency)
   { src = "https://github.com/selimacerbas/live-server.nvim.git",           version = "v1.2.2", },
   -- markdown preview
@@ -50,4 +52,5 @@ require("plugins.telescope")
 require("plugins.autopairs")
 require("plugins.indent-blankline")
 require("plugins.vscode-colorscheme")
+-- require("plugins.nightfox-colorscheme")
 require("plugins.markdown-preview")

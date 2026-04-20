@@ -50,6 +50,11 @@
       "src": "https://github.com/mason-org/mason.nvim.git",
       "version": "'v2.2.1'"
     },
+    "nightfox.nvim": {
+      "rev": "d3e8b1acc095baf57af81bb5e89fe7c4359eb619",
+      "src": "https://github.com/EdenEast/nightfox.nvim.git",
+      "version": "'v3.10.0'"
+    },
     "nvim-autopairs": {
       "rev": "23320e75953ac82e559c610bec5a90d9c6dfa743",
       "src": "https://github.com/windwp/nvim-autopairs.git",
